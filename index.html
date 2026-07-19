@@ -153,15 +153,27 @@
       <a class="btn btn-primary" href="https://yuque.com/u1098648/kb/exm8619fve0z91g1?singleDoc#%20《先看我》" target="_blank" rel="noopener">
         立即体验一同看GV <span class="arrow">→</span>
       </a>
-      <a class="btn btn-ghost" href="http://134.175.168.47/free-account" target="_blank" rel="noopener">
+      <a id="btnFree" class="btn btn-ghost" href="http://134.175.168.47/free-account" target="_blank" rel="noopener">
         免费领取VIP账户 <span class="arrow">→</span>
       </a>
-      <a class="btn btn-ghost" href="http://134.175.168.47" target="_blank" rel="noopener">
+      <a id="btnRent" class="btn btn-ghost" href="http://134.175.168.47" target="_blank" rel="noopener">
         我要租号 <span class="arrow">→</span>
       </a>
     </nav>
 
     <footer>© 专属你的 GV 视界 · 尽情畅飞</footer>
   </div>
+
+  <script>
+    // 引导页若通过分享链接带 ?invite= 进入，把邀请码透传到主站按钮，保持邀请关系
+    (function () {
+      var invite = new URLSearchParams(location.search).get('invite');
+      if (!invite) return;
+      var free = document.getElementById('btnFree');
+      var rent = document.getElementById('btnRent');
+      if (free) free.href = 'http://134.175.168.47/free-account?invite=' + encodeURIComponent(invite);
+      if (rent) rent.href = 'http://134.175.168.47/?invite=' + encodeURIComponent(invite);
+    })();
+  </script>
 </body>
 </html>
