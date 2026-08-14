@@ -103,6 +103,35 @@
 
   footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px 0 40px; }
 
+  /* ===== 橙色按钮拦截弹窗 ===== */
+  .modal-mask {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(8,10,14,.72); backdrop-filter: blur(3px);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-mask.show { display: flex; }
+  .modal {
+    width: 100%; max-width: 440px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(180deg, #1b2230, #151a24);
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px rgba(0,0,0,.5);
+    animation: pop .18s ease;
+  }
+  @keyframes pop { from { transform: translateY(10px) scale(.98); opacity: 0 } to { transform: none; opacity: 1 } }
+  .modal-head {
+    padding: 20px 22px 8px; font-size: 18px; font-weight: 800; color: #fff;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-head .warn { color: var(--accent2); }
+  .modal-body { padding: 4px 22px 18px; color: #d7dbe2; font-size: 14.5px; line-height: 1.8; }
+  .modal-body ul { margin: 6px 0 0; padding-left: 18px; }
+  .modal-body li { margin: 4px 0; }
+  .modal-body b { color: var(--accent2); }
+  .modal-foot { display: flex; gap: 12px; padding: 14px 22px 22px; }
+  .modal-foot .btn { margin: 0; font-size: 15px; padding: 13px 16px; }
+  .btn.flash { animation: btnflash 1s ease 2; }
+  @keyframes btnflash { 0%,100% { box-shadow: none } 50% { box-shadow: 0 0 0 4px rgba(255,179,71,.55) } }
+
   @media (max-width: 640px) {
     .hero { padding: 44px 0 24px; }
     .muscles { gap: 8px; }
@@ -160,7 +189,7 @@
 
     <!-- ===== 三个 CTA 按钮 ===== -->
     <nav class="cta">
-      <a class="btn btn-primary" href="https://yuque.com/u1098648/kb/exm8619fve0z91g1?singleDoc#%20《先看我》" target="_blank" rel="noopener">
+      <a id="btnSample" class="btn btn-primary" href="https://yuque.com/u1098648/kb/exm8619fve0z91g1?singleDoc#%20《先看我》" target="_blank" rel="noopener">
         立即体验一同看GV <span class="arrow">→</span>
       </a>
       <a id="btnFree" class="btn btn-ghost" href="http://134.175.168.47/free-account" target="_blank" rel="noopener">
@@ -174,6 +203,24 @@
     <footer>© 专属你的 GV 视界 · 尽情畅飞</footer>
   </div>
 
+  <!-- 橙色「立即体验」按钮拦截弹窗 -->
+  <div class="modal-mask" id="sampleModal">
+    <div class="modal">
+      <div class="modal-head"><span class="warn">⚠️</span> 先领免费号，别去官网花冤枉钱</div>
+      <div class="modal-body">
+        一同看GV官网直接看要花钱，而且很贵，不建议直接去付费。
+        <ul>
+          <li>请先回到<b>本页</b>，点击下方「<b>免费领取VIP账户</b>」按钮，登录后即可<b>免费</b>畅看全站。</li>
+          <li>样片也可以看，但正式观看请走免费通道 ↓</li>
+        </ul>
+      </div>
+      <div class="modal-foot">
+        <a class="btn btn-ghost" id="modalBack" href="javascript:void(0)">返回领免费号</a>
+        <a class="btn btn-primary" id="modalContinue" href="javascript:void(0)">我就要看样片 <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
   <script>
     // 引导页若通过分享链接带 ?invite= 进入，把邀请码透传到主站按钮，保持邀请关系
     (function () {
@@ -183,6 +230,34 @@
       var rent = document.getElementById('btnRent');
       if (free) free.href = 'http://134.175.168.47/free-account?invite=' + encodeURIComponent(invite);
       if (rent) rent.href = 'http://134.175.168.47/?invite=' + encodeURIComponent(invite);
+    })();
+
+    // 拦截橙色「立即体验」按钮：点击前弹窗提示，引导走免费通道而非官网付费
+    (function () {
+      var sample = document.getElementById('btnSample');
+      var modal = document.getElementById('sampleModal');
+      if (!sample || !modal) return;
+      var href = sample.getAttribute('href');
+      sample.addEventListener('click', function (e) {
+        e.preventDefault();
+        modal.classList.add('show');
+      });
+      document.getElementById('modalBack').addEventListener('click', function () {
+        modal.classList.remove('show');
+        var free = document.getElementById('btnFree');
+        if (free) {
+          free.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          free.classList.add('flash');
+          setTimeout(function () { free.classList.remove('flash'); }, 2000);
+        }
+      });
+      document.getElementById('modalContinue').addEventListener('click', function () {
+        modal.classList.remove('show');
+        window.open(href, '_blank', 'noopener');
+      });
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) modal.classList.remove('show');
+      });
     })();
   </script>
 </body>
