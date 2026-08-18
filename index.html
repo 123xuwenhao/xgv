@@ -261,15 +261,15 @@
       var sample = document.getElementById('btnSample');
       var modal = document.getElementById('sampleModal');
       if (!sample || !modal) return;
-      // 弹框主按钮「去一同看GV看看」固定指向视频站；橙色按钮本身仍是 yuque 样片 doc
-      var siteUrl = 'http://134.175.168.47';
+      // 弹框主按钮「去一同看GV看看」指向 yuque 样片 doc（与橙色按钮落点一致，先看样片体验）
+      var siteUrl = 'https://yuque.com/u1098648/kb/exm8619fve0z91g1?singleDoc#%20《先看我》';
 
       sample.addEventListener('click', function (e) {
         e.preventDefault();
         modal.classList.add('show');
       });
 
-      // 去一同看GV视频站逛逛（新标签打开，保留本引导页方便返回领号）
+      // 打开 yuque 样片 doc 先看体验（新标签打开，保留本引导页方便返回领号）
       document.getElementById('modalGoSite').addEventListener('click', function () {
         modal.classList.remove('show');
         window.open(siteUrl, '_blank', 'noopener');
