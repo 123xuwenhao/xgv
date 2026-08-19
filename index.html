@@ -111,7 +111,8 @@
   }
   .modal-mask.show { display: flex; }
   .modal {
-    width: 100%; max-width: 440px; border-radius: 18px; overflow: hidden;
+    width: 100%; max-width: 440px; border-radius: 18px;
+    max-height: calc(100vh - 40px); overflow-y: auto; -webkit-overflow-scrolling: touch;
     background: linear-gradient(180deg, #1b2230, #151a24);
     border: 1px solid var(--border);
     box-shadow: 0 24px 60px rgba(0,0,0,.5);
@@ -121,13 +122,20 @@
   .modal-head {
     padding: 20px 22px 8px; font-size: 18px; font-weight: 800; color: #fff;
     display: flex; align-items: center; gap: 8px;
+    position: sticky; top: 0; z-index: 2;
+    background: linear-gradient(180deg, #1b2230 80%, rgba(27,34,48,.92));
   }
   .modal-head .warn { color: var(--accent2); }
   .modal-body { padding: 4px 22px 18px; color: #d7dbe2; font-size: 14.5px; line-height: 1.8; }
   .modal-body ul { margin: 6px 0 0; padding-left: 18px; }
   .modal-body li { margin: 4px 0; }
   .modal-body b { color: var(--accent2); }
-  .modal-foot { display: flex; gap: 12px; padding: 14px 22px 22px; }
+  .modal-foot {
+    display: flex; gap: 12px; padding: 14px 22px 22px;
+    position: sticky; bottom: 0; z-index: 2;
+    background: linear-gradient(0deg, #151a24 80%, rgba(21,26,36,.92));
+    border-top: 1px solid var(--border);
+  }
   .modal-foot .btn { margin: 0; font-size: 15px; padding: 13px 16px; }
   .btn.flash { animation: btnflash 1s ease 2; }
   @keyframes btnflash { 0%,100% { box-shadow: none } 50% { box-shadow: 0 0 0 4px rgba(255,179,71,.55) } }
