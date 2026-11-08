@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>xgv.netlify.app</title>
+<title>专属你的 GV 视界 · 记住本站网址</title>
 <style>
   :root {
     --bg: #0e1014;
@@ -44,6 +44,50 @@
   .hero p.lead {
     color: var(--muted); max-width: 640px; margin: 0 auto 28px; font-size: 16px;
   }
+
+  /* ===== 记住本站网址（首屏主展示 + 页脚强化）=====
+     三个引导页网址共用这一份 HTML，网址由 JS 从 location 动态取，
+     绝不硬编码域名：访客在哪个网址进来，就显示/复制/收藏哪个网址。 */
+  .site-url {
+    max-width: 520px; margin: 0 auto 26px; text-align: left;
+    background: linear-gradient(135deg, rgba(255,122,69,.16), rgba(255,179,71,.07));
+    border: 1px solid rgba(255,179,71,.48);
+    border-radius: 16px; padding: 16px 18px;
+    box-shadow: 0 10px 30px rgba(255,122,69,.13);
+  }
+  .site-url-label {
+    color: var(--accent2); font-weight: 800; font-size: 14px;
+    letter-spacing: .4px; margin-bottom: 10px;
+  }
+  .site-url-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .site-url-link {
+    flex: 1 1 auto; min-width: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+    font-size: clamp(15px, 4vw, 20px); font-weight: 800;
+    color: #fff; text-decoration: none;
+    border-bottom: 1px dashed rgba(255,255,255,.55);
+    overflow-wrap: anywhere; word-break: break-all; line-height: 1.4;
+  }
+  .site-url-link:hover { color: var(--accent2); border-bottom-color: var(--accent2); }
+  .site-url-copy {
+    flex: 0 0 auto; cursor: pointer; font-family: inherit;
+    background: rgba(255,255,255,.12); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 15px; font-size: 14px; font-weight: 700;
+    transition: background .15s ease;
+  }
+  .site-url-copy:hover { background: rgba(255,255,255,.22); }
+  .site-url-copy.done {
+    background: rgba(76,175,120,.24); border-color: rgba(76,175,120,.65); color: #c9f5dd;
+  }
+  .site-url-hint { color: var(--muted); font-size: 12.5px; margin-top: 10px; line-height: 1.6; }
+  .foot-url { margin-bottom: 8px; font-size: 14px; color: #d7dbe2; }
+  .foot-url a {
+    color: var(--accent2); font-weight: 700; text-decoration: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    border-bottom: 1px dashed rgba(255,179,71,.6);
+  }
+  .foot-url a:hover { color: #fff; }
 
   /* ===== 顶部 banner 图片占位 ===== */
   .banner-ph {
@@ -158,6 +202,8 @@
 
   @media (max-width: 640px) {
     .hero { padding: 44px 0 24px; }
+    .site-url { padding: 14px; margin-bottom: 20px; }
+    .site-url-hint { font-size: 12px; }
     .muscles { gap: 8px; }
     .muscle-card .emoji { font-size: 28px; }
     .muscle-card .cap { font-size: 11px; }
@@ -186,22 +232,32 @@
         一同看GV会员太贵？我们开放了免费VIP账号共享。点下方橙色按钮先看样片，回来领个免费号，再回到「一同看GV」登录就能免费看全站。技术资源，且用且珍惜。
       </p>
 
+      <!-- 记住本站网址：文案固定，网址由脚本按当前访问地址填充（三个引导页网址自动适配） -->
+      <div class="site-url">
+        <div class="site-url-label">📌 记住本站网址 · 建议收藏</div>
+        <div class="site-url-row">
+          <a id="siteUrlLink" class="site-url-link" href="./" target="_blank" rel="noopener">正在读取网址…</a>
+          <button id="siteUrlCopy" class="site-url-copy" type="button">复制</button>
+        </div>
+        <div class="site-url-hint">点网址可在新标签打开，方便加入收藏；也可点「复制」存到备忘录，下次直接访问。</div>
+      </div>
+
       <!-- 顶部横幅图片占位：把下面 .tag 换成 <img> 或给 .banner-ph 设 background-image 即可 -->
       <div class="banner-ph">
-        <img src="img/5.jpg" alt="banner" onload="this.style.display='block';this.previousElementSibling.style.display='none'">
+        <img src="img/5.jpg" alt="banner" onload="this.style.display='block';var t=this.previousElementSibling;if(t)t.style.display='none'">
       </div>
     </section>
 
     <!-- ===== 肌肉照占位（3 张）===== -->
     <section class="muscles">
       <div class="muscle-card">
-        <img src="img/11.jpg" alt="肌肉照1" onload="this.style.display='block';this.parentElement.querySelector('.emoji,.cap').style.display='none'">
+        <img src="img/11.jpg" alt="肌肉照1" onload="this.style.display='block';var p=this.parentElement.querySelector('.emoji,.cap');if(p)p.style.display='none'">
       </div>
       <div class="muscle-card">
-        <img src="img/21.jpg" alt="肌肉照1" onload="this.style.display='block';this.parentElement.querySelector('.emoji,.cap').style.display='none'">
+        <img src="img/21.jpg" alt="肌肉照1" onload="this.style.display='block';var p=this.parentElement.querySelector('.emoji,.cap');if(p)p.style.display='none'">
       </div>
       <div class="muscle-card">
-        <img src="img/31.jpg" alt="肌肉照1" onload="this.style.display='block';this.parentElement.querySelector('.emoji,.cap').style.display='none'">
+        <img src="img/31.jpg" alt="肌肉照1" onload="this.style.display='block';var p=this.parentElement.querySelector('.emoji,.cap');if(p)p.style.display='none'">
       </div>
     </section>
 
@@ -227,7 +283,10 @@
       </a>
     </nav>
 
-    <footer>© 专属你的 GV 视界 · 尽情畅飞</footer>
+    <footer>
+      <div class="foot-url">本站网址：<a id="siteUrlFoot" href="./" target="_blank" rel="noopener">—</a> · 建议收藏，下次直接访问</div>
+      © 专属你的 GV 视界 · 尽情畅飞
+    </footer>
   </div>
 
   <!-- 橙色「立即体验」按钮引导弹窗 -->
@@ -254,6 +313,62 @@
   </div>
 
   <script>
+    // ===== 记住本站网址：按当前访问地址动态填充 =====
+    // 三个引导页网址共用这一份 HTML，绝不硬编码域名：访客在哪个网址进来，
+    // 就显示 / 复制 / 收藏哪个网址。只取 origin（协议+主机），不带 ?invite= 和 hash ——
+    // 让访客记住的是稳定入口，而不是带别人邀请码的临时链接。
+    (function () {
+      var host = location.host || '';
+      var card = document.querySelector('.site-url');
+      var foot = document.querySelector('.foot-url');
+      if (!host || location.protocol === 'file:') {
+        // 本地 file:// 直接打开时没有可记忆的网址，隐藏整块避免显示误导内容
+        if (card) card.style.display = 'none';
+        if (foot) foot.style.display = 'none';
+        return;
+      }
+      var origin = (location.origin && location.origin !== 'null')
+        ? location.origin : (location.protocol + '//' + host);
+      var url = origin + '/';
+      var link = document.getElementById('siteUrlLink');
+      var footLink = document.getElementById('siteUrlFoot');
+      var copy = document.getElementById('siteUrlCopy');
+      if (link) { link.href = url; link.textContent = host; link.title = '在新标签打开 ' + host; }
+      if (footLink) { footLink.href = url; footLink.textContent = host; }
+      // 浏览器标签 / 收藏夹名称也带上当前域名，三个网址不会串
+      document.title = host + ' · 专属你的 GV 视界';
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        }
+        // http:// 站点没有 Clipboard API，退回 execCommand
+        return new Promise(function (resolve, reject) {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed'; ta.style.top = '-1000px';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy') ? resolve() : reject(new Error('copy failed')); }
+          catch (e) { reject(e); }
+          finally { document.body.removeChild(ta); }
+        });
+      }
+      function flash(text, ok) {
+        if (!copy) return;
+        copy.textContent = text;
+        if (ok) copy.classList.add('done');
+        setTimeout(function () {
+          copy.textContent = '复制'; copy.classList.remove('done');
+        }, 1800);
+      }
+      if (copy) copy.addEventListener('click', function () {
+        copyText(url).then(
+          function () { flash('已复制 ✓', true); },
+          function () { flash('请长按网址复制', false); }
+        );
+      });
+    })();
+
     // 引导页若通过分享链接带 ?invite= 进入，把邀请码透传到主站按钮，保持邀请关系
     (function () {
       var invite = new URLSearchParams(location.search).get('invite');
